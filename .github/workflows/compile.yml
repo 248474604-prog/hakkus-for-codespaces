@@ -3,19 +3,31 @@ name: Compile iOS Dylib
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  compile:
     runs-on: macos-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: List files
-      run: ls -la
-      
-    - name: Test compile
+    - name: Compile bypass.dylib
       run: |
-        echo "📱 这是一个测试编译工作流"
-        echo "如果这个能运行，说明配置正确"
+        echo "🔨 开始编译 bypass.dylib..."
+        clang -arch arm64 \
+          -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \
+          -miphoneos-version-min=11.0 \
+          -dynamiclib \
+          bypass.c -o bypass.dylib
+        
+        echo "✅ 编译完成"
+        file bypass.dylib
+        ls -la bypass.dylib
+        
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-bypass-dylib
+        path: bypass.dylib
