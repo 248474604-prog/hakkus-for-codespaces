@@ -1,0 +1,29 @@
+name: Auto Build Dylib
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Compile iOS dylib
+      run: |
+        echo "开始编译 bypass.dylib..."
+        clang -arch arm64 -dynamiclib bypass.c -o bypass.dylib
+        echo "编译完成！"
+        file bypass.dylib
+        ls -lh bypass.dylib
+        
+    - name: Upload dylib
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-dylib
+        path: bypass.dylib
+        retention-days: 7
