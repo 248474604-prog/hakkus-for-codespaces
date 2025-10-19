@@ -1,0 +1,21 @@
+name: Compile iOS Dylib
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: List files
+      run: ls -la
+      
+    - name: Test compile
+      run: |
+        echo "📱 这是一个测试编译工作流"
+        echo "如果这个能运行，说明配置正确"
