@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  compile:
+  build:
     runs-on: macos-latest
     
     steps:
@@ -22,9 +22,9 @@ jobs:
           -dynamiclib \
           bypass.c -o bypass.dylib
         
-        echo "✅ 编译完成"
+        echo "✅ 编译完成！"
         file bypass.dylib
-        ls -la bypass.dylib
+        ls -lh bypass.dylib
         
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
